@@ -1,6 +1,6 @@
 import express, { Express } from 'express';
 import dotenv from 'dotenv';
-import { testDbConnection } from './config/db';
+import { testDbConnection } from './database/config/db';
 // Import routes
 // import userRoutes from '../routes/userRoutes';
 // import expenseRoutes from '../routes/expenseRoutes';

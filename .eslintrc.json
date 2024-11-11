@@ -11,6 +11,7 @@
     "es6": true
   },
   "rules": {
+    "@typescript-eslint/no-var-requires": "off"
     // Add custom rules here
   }
 }
