@@ -1,9 +1,6 @@
 'use strict';
-// const { v4: uuidv4 } = require('uuid'); // For generating UUIDs
-// const { faker } = require('@faker-js/faker');
-// const bcrypt = require('bcryptjs');
 import { v4 as uuidv4 } from 'uuid';
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 import bcrypt from 'bcryptjs';
 
 /** @type {import('sequelize-cli').Migration} */
