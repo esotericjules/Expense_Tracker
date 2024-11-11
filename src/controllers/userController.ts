@@ -1,4 +1,4 @@
-import db from '../config/db';
+import db from '../database/config/db';
 import { Router, Request, Response } from 'express';
 
 export const registerUser = async (req: Request, res: Response) => {

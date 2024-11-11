@@ -1,5 +1,5 @@
 import { DataTypes, Model } from 'sequelize';
-import sequelize from '../config/sequelize';
+import sequelize from '../database/config/sequelize';
 import User from './userModel';
 
 class Category extends Model {}
@@ -14,6 +14,7 @@ Category.init(
     name: {
       type: DataTypes.STRING(50),
       allowNull: false,
+      unique: true,
     },
     description: {
       type: DataTypes.TEXT,
@@ -24,7 +25,7 @@ Category.init(
 );
 
 // Define the relationship to the User model
-User.hasMany(Category, { foreignKey: 'id', onDelete: 'CASCADE' });
-Category.belongsTo(User, { foreignKey: 'user_id' });
+User.hasMany(Category, { foreignKey: 'userId', onDelete: 'CASCADE' });
+Category.belongsTo(User, { foreignKey: 'userId' });
 
 export default Category;

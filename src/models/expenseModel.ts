@@ -1,5 +1,5 @@
 import { DataTypes, Model } from 'sequelize';
-import sequelize from '../config/sequelize';
+import sequelize from '../database/config/sequelize';
 import User from './userModel';
 import Category from './categoryModel';
 
@@ -11,6 +11,10 @@ Expense.init(
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
+    },
+    name: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
     },
     amount: {
       type: DataTypes.DECIMAL(10, 2),
@@ -28,10 +32,10 @@ Expense.init(
 );
 
 // Define relationships to User and Category models
-User.hasMany(Expense, { foreignKey: 'id', onDelete: 'CASCADE' });
-Expense.belongsTo(User, { foreignKey: 'user_id' });
+User.hasMany(Expense, { foreignKey: 'userId', onDelete: 'CASCADE' });
+Expense.belongsTo(User, { foreignKey: 'userId' });
 
-Category.hasMany(Expense, { foreignKey: 'id', onDelete: 'SET NULL' });
-Expense.belongsTo(Category, { foreignKey: 'category_id' });
+Category.hasMany(Expense, { foreignKey: 'categoryId', onDelete: 'SET NULL' });
+Expense.belongsTo(Category, { foreignKey: 'categoryId' });
 
 export default Expense;

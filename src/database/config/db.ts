@@ -1,9 +1,9 @@
 import { Pool, QueryResult } from 'pg';
 import * as dotenv from 'dotenv';
 import sequelize from './sequelize';
-import User from '../models/userModel';
-import Category from '../models/categoryModel';
-import Expense from '../models/expenseModel';
+import User from '../../models/userModel';
+import Category from '../../models/categoryModel';
+import Expense from '../../models/expenseModel';
 
 dotenv.config();
 
@@ -36,6 +36,7 @@ export const testDbConnection = async (): Promise<void> => {
       .authenticate()
       .then(() => {
         console.log('Database connected successfully.');
+        // TODO: Move the sync calls for creating tables to a separate function
         User.sync();
         Category.sync();
         Expense.sync();
@@ -59,4 +60,3 @@ export const testDbConnection = async (): Promise<void> => {
     console.error('Database connection error:', error);
   }
 };
-
