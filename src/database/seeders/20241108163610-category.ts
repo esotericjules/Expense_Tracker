@@ -1,14 +1,17 @@
 'use strict';
 import { v4 as uuidv4 } from 'uuid';
 import { faker } from '@faker-js/faker';
-import User from './../../models/userModel';
+import User from '../../models/userModel';
+import { QueryInterface } from 'sequelize';
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface) {
+  async up(queryInterface: QueryInterface) {
     const users = await User.findAll();
 
-    const userIds = users.map((user) => user.id);
+    const userIds = users.map((user) => {
+      return user.id;
+    });
 
     const categoryNames = [
       'Food',
@@ -34,7 +37,7 @@ module.exports = {
     await queryInterface.bulkInsert('category', categories);
   },
 
-  async down(queryInterface) {
+  async down(queryInterface: QueryInterface) {
     await queryInterface.bulkDelete('category', null, {});
   },
 };

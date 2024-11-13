@@ -1,9 +1,26 @@
-import { DataTypes, Model } from 'sequelize';
+import {
+  DataTypes,
+  Model,
+  InferAttributes,
+  InferCreationAttributes,
+  NonAttribute,
+} from 'sequelize';
 import sequelize from '../database/config/sequelize';
 import User from './userModel';
 import Category from './categoryModel';
 
-class Expense extends Model {}
+class Expense extends Model<
+  InferAttributes<Expense, { omit: 'userId' | 'categoryId' }>,
+  InferCreationAttributes<Expense, { omit: 'userId' | 'categoryId' }>
+> {
+  declare id: string;
+  declare name: string;
+  declare amount: number;
+  declare description: string;
+  declare date: Date;
+  declare userId?: NonAttribute<User[]>;
+  declare categoryId?: NonAttribute<Category[]>;
+}
 
 Expense.init(
   {

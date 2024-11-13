@@ -1,7 +1,17 @@
-import { DataTypes, Model } from 'sequelize';
+import {
+  DataTypes,
+  Model,
+  InferAttributes,
+  InferCreationAttributes,
+} from 'sequelize';
 import sequelize from '../database/config/sequelize';
 
-class User extends Model {}
+class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
+  declare id: string;
+  declare username: string;
+  declare email: string;
+  declare password: string;
+}
 
 User.init(
   {
