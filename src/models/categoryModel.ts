@@ -1,8 +1,22 @@
-import { DataTypes, Model } from 'sequelize';
+import {
+  DataTypes,
+  Model,
+  InferAttributes,
+  InferCreationAttributes,
+  NonAttribute,
+} from 'sequelize';
 import sequelize from '../database/config/sequelize';
 import User from './userModel';
 
-class Category extends Model {}
+class Category extends Model<
+  InferAttributes<Category, { omit: 'userId' }>,
+  InferCreationAttributes<Category, { omit: 'userId' }>
+> {
+  declare id: string;
+  declare name: string;
+  declare description: string;
+  declare userId?: NonAttribute<User[]>;
+}
 
 Category.init(
   {
