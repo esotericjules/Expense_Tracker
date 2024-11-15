@@ -45,5 +45,22 @@ export const loginUser = async (
   req: Request,
   res: Response,
 ): Promise<Response | void> => {
-  // Logic for user login
+  const { email, password } = req.body;
+
+  // check if user exists
+  const user = await User.findOne({ where: { email } });
+  // Check if password is correct
+  let validPassword = null;
+  if (user) {
+    validPassword = await bcrypt.compare(password, user.password);
+  }
+
+  // Validate required fields
+  if (!email || !password || !user || !validPassword) {
+    return res
+      .status(400)
+      .json({ error: 'Your username or password is incorrect' });
+  }
+
+  return res.status(200).json({ message: 'Login successful' });
 };
