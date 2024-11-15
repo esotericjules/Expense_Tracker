@@ -4,6 +4,7 @@ import {
   InferAttributes,
   InferCreationAttributes,
   NonAttribute,
+  CreationOptional,
 } from 'sequelize';
 import sequelize from '../database/config/sequelize';
 import User from './userModel';
@@ -12,7 +13,7 @@ class Category extends Model<
   InferAttributes<Category, { omit: 'userId' }>,
   InferCreationAttributes<Category, { omit: 'userId' }>
 > {
-  declare id: string;
+  declare id: CreationOptional<string>;
   declare name: string;
   declare description: string;
   declare userId?: NonAttribute<User[]>;

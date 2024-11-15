@@ -4,6 +4,7 @@ import {
   InferAttributes,
   InferCreationAttributes,
   NonAttribute,
+  CreationOptional,
 } from 'sequelize';
 import sequelize from '../database/config/sequelize';
 import User from './userModel';
@@ -13,7 +14,7 @@ class Expense extends Model<
   InferAttributes<Expense, { omit: 'userId' | 'categoryId' }>,
   InferCreationAttributes<Expense, { omit: 'userId' | 'categoryId' }>
 > {
-  declare id: string;
+  declare id: CreationOptional<string>;
   declare name: string;
   declare amount: number;
   declare description: string;
