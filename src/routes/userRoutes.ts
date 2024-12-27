@@ -7,6 +7,7 @@ const userRoutes = express();
 userRoutes.post(ROUTES.REGISTER, (req, res) => {
   registerUser(req, res);
 });
+
 userRoutes.post(ROUTES.LOGIN, (req, res) => {
   loginUser(req, res);
 });
