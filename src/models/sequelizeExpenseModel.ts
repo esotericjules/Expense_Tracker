@@ -7,8 +7,8 @@ import {
   CreationOptional,
 } from 'sequelize';
 import sequelize from '../database/config/sequelize';
-import User from './userModel';
-import Category from './categoryModel';
+import User from './sequelizeUserModel';
+import Category from './sequelizeCategoryModel';
 
 class Expense extends Model<
   InferAttributes<Expense, { omit: 'userId' | 'categoryId' }>,

@@ -7,7 +7,7 @@ import {
   CreationOptional,
 } from 'sequelize';
 import sequelize from '../database/config/sequelize';
-import User from './userModel';
+import User from './sequelizeUserModel';
 
 class Category extends Model<
   InferAttributes<Category, { omit: 'userId' }>,

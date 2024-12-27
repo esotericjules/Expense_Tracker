@@ -2,8 +2,8 @@
 import { v4 as uuidv4 } from 'uuid';
 import { faker } from '@faker-js/faker';
 import { QueryInterface } from 'sequelize';
-import User from '../../models/userModel';
-import Category from '../../models/categoryModel';
+import User from '../../models/sequelizeUserModel';
+import Category from '../../models/sequelizeCategoryModel';
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface: QueryInterface) {

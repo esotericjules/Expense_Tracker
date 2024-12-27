@@ -1,7 +1,7 @@
 'use strict';
 import { v4 as uuidv4 } from 'uuid';
 import { faker } from '@faker-js/faker';
-import User from '../../models/userModel';
+import User from '../../models/sequelizeUserModel';
 import { QueryInterface } from 'sequelize';
 
 /** @type {import('sequelize-cli').Migration} */
