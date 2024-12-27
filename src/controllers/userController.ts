@@ -1,66 +1,110 @@
 import { Request, Response } from 'express';
-import User from '../models/userModel';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+import { pool } from '../database/config/db';
+import { User } from '../types/user';
+import QUERIES from '../queries';
+import { handleRequestErrorResponse } from '../helpers';
+dotenv.config();
 
-export const registerUser = async (
-  req: Request,
-  res: Response,
-): Promise<Response | void> => {
+const secretKey = process.env.JWT_SECRET_KEY;
+export const registerUser = async (req: Request, res: Response): Promise<Response> => {
+  // Implement registration logic
+  const { username, email, password } = req.body;
+
+  if (!username || !email || !password) {
+    return handleRequestErrorResponse(
+      res,
+      400,
+      'Username, email, and password are required',
+    );
+  }
+
   try {
-    const { username, email, password } = req.body;
+    // check if user already exists
+    const findUserByEmailQuery = QUERIES.FIND_USER_BY_EMAIL;
+    const result = await pool.query(findUserByEmailQuery, [email]);
 
-    // Validate required fields
-    if (!username || !email || !password) {
-      return res.status(400).json({ error: 'All fields are required' });
+    if (result.rows.length > 0) {
+      return handleRequestErrorResponse(res, 409, 'User already exists');
     }
 
-    // Check if user already exists
-    const existingUser = await User.findOne({ where: { email } });
-    if (existingUser) {
-      return res
-        .status(409)
-        .json({ error: 'User with this email already exists' });
-    }
-
-    // Hash password
+    // encrypt password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = await User.create({
+    // save user to database
+    const createUserQuery = QUERIES.CREATE_USER;
+    const newUser = await pool.query(createUserQuery, [
       username,
       email,
-      password: hashedPassword,
-    });
+      hashedPassword,
+    ]);
 
-    res.status(201).json({
+    const user: User = newUser.rows[0];
+
+    return res.status(201).json({
       message: 'User registered successfully',
-      user: { username: newUser.username, email: newUser.email },
+      data: {
+        ...user,
+      },
     });
-  } catch (err) {
-    console.error('Error in registration:', err);
-    res.status(500).json({ error: 'Server error' });
+  } catch (error) {
+    console.error('Error registering user:', error);
+    return handleRequestErrorResponse(res, 500, 'Internal server error');
   }
 };
 
-export const loginUser = async (
-  req: Request,
-  res: Response,
-): Promise<Response | void> => {
+export const loginUser = async (req: Request, res: Response): Promise<Response> => {
   const { email, password } = req.body;
 
-  // check if user exists
-  const user = await User.findOne({ where: { email } });
-  // Check if password is correct
-  let validPassword = null;
-  if (user) {
-    validPassword = await bcrypt.compare(password, user.password);
+  if (!secretKey) {
+    console.error('JWT secret key is not defined');
+    return res.status(500).json({ message: 'Server error' });
   }
 
-  // Validate required fields
-  if (!email || !password || !user || !validPassword) {
-    return res
-      .status(400)
-      .json({ error: 'Your username or password is incorrect' });
+  if (!email || !password) {
+    return handleRequestErrorResponse(
+      res,
+      400,
+      'Email and password are required',
+    );
   }
 
-  return res.status(200).json({ message: 'Login successful' });
+  try {
+    const findUserByEmailQuery = QUERIES.FIND_USER_BY_EMAIL;
+    const result = await pool.query(findUserByEmailQuery, [email]);
+
+    if (result.rows.length === 0) {
+      return handleRequestErrorResponse(res, 404, 'User not found');
+    }
+
+    const user: User = result.rows[0];
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return handleRequestErrorResponse(res, 401, 'Invalid password');
+    }
+
+    // Generate JWT token
+    const token: string = jwt.sign(
+      { userId: user.id, email: user.email },
+      secretKey,
+      {
+        expiresIn: '1h',
+      },
+    );
+
+    res.status(200).json({
+      message: 'Login successful',
+      token,
+      data: {
+        ...user,
+      },
+    });
+    return res;
+  } catch (error) {
+    console.error('Error logging in:', error);
+    return handleRequestErrorResponse(res, 500, 'Internal server error');
+  }
 };
