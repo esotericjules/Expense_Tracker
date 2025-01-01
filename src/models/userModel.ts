@@ -1,5 +1,5 @@
 import { pool } from '../database/config/db';
-import QUERIES from '../queries';
+import QUERIES from '../queries/index';
 import { User } from '../types/user';
 
 export const findUserByEmail = async (email: string): Promise<User> => {

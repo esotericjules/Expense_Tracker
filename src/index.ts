@@ -4,7 +4,7 @@ import { testDbConnection } from './database/config/db';
 // Import routes
 import userRoutes from './routes/userRoutes';
 // import expenseRoutes from '../routes/expenseRoutes';
-// import categoryRoutes from '../routes/categoryRoutes';
+import categoryRoutes from './routes/categoryRoutes';
 
 // Load environment variables
 dotenv.config();
@@ -18,7 +18,9 @@ const PORT = process.env.PORT || 3000;
 // Middleware to parse JSON request bodies
 app.use(express.json());
 
-app.use(userRoutes);
+const routes = [userRoutes, categoryRoutes];
+app.use(routes);
+
 // app.use('/api/expenses', expenseRoutes);
 // app.use('/api/categories', categoryRoutes);
 
