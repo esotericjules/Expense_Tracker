@@ -8,6 +8,7 @@ export const createCategory = async (
   res: Response,
 ): Promise<void> => {
   const { name, description, userId } = req.body;
+  console.log('req.body:', req.body);
 
   if (!name) {
     handleRequestErrorResponse(res, 400, 'The category name is required');
@@ -16,6 +17,12 @@ export const createCategory = async (
 
   if (!userId) {
     handleRequestErrorResponse(res, 400, 'User ID is required');
+    return;
+  }
+
+  if (userId !== req.body.user.userId) {
+    handleRequestErrorResponse(res, 403, 'Forbidden');
+    return;
   }
 
   // save category to database
