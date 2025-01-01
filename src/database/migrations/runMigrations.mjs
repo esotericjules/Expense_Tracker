@@ -19,16 +19,28 @@ const runMigrations = async () => {
   const __dirname = path.dirname(__filename);
 
   const migrationsPath = path.join(__dirname, './');
-  console.log('__filename', __filename);
-  console.log('__dirname', __dirname);
-  console.log('migrationsPath', migrationsPath);
+  const migrationsArgs = process.argv.slice(2);
 
-  const migrationsFiles = fs
+  // Determine which files to run
+  const allMigrationsFiles = fs
     .readdirSync(migrationsPath)
-    .filter((file) => file.endsWith('.sql')); // Filter only `.sql` files
-  console.log('migrationsFiles', migrationsFiles);
+    .filter((file) => file.endsWith('.sql'));
 
-  for (const file of migrationsFiles) {
+  const filesToRun = migrationsArgs.length
+    ? migrationsArgs.filter((arg) => allMigrationsFiles.includes(arg))
+    : allMigrationsFiles;
+
+  if (filesToRun.length === 0) {
+    console.error(
+      migrationsArgs.length
+        ? 'No matching migrations files found for the provided arguments.'
+        : 'No migrations files found to execute.',
+    );
+    pool.end();
+    return;
+  }
+
+  for (const file of filesToRun) {
     const filePath = path.join(migrationsPath, file);
     const sql = fs.readFileSync(filePath, 'utf8');
     try {

@@ -10,8 +10,11 @@
     "start": "npm run build && ts-node src/index.ts",
     "dev": "npm run build && nodemon src/index.ts",
     "seeders": "node src/database/seeders/runSeeders.mjs",
+    "seeders:specific": "node src/database/seeders/runSeeders.mjs",
     "generate": "find src/database/seeders -name 'generate*.mjs' -exec node {} \\;",
+    "generate:specific": "node -e \"import('./src/database/seeders/' + process.env.GENERATE_FILE)\"",
     "migrations": "node src/database/migrations/runMigrations.mjs",
+    "migration:specific": "node src/database/migrations/runMigrations.mjs",
     "format": "prettier --write .",
     "lint": "eslint --fix",
     "test": "echo \"Error: no test specified\" && exit 1"

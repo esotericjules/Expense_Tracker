@@ -14,22 +14,34 @@ const pool = new Pool({
 });
 
 const runSeeders = async () => {
-  console.log('Running seeders...');
   const __filename = fileURLToPath(import.meta.url);
   // Get the directory name of the current file
   const __dirname = path.dirname(__filename);
 
   const seedersPath = path.join(__dirname, './');
-  console.log('__filename', __filename);
-  console.log('__dirname', __dirname);
-  console.log('seedersPath', seedersPath);
 
-  const seederFiles = fs
+  // Get seeder file arguments from the command line
+  const seederArgs = process.argv.slice(2);
+  // Determine which files to run
+  const allSeederFiles = fs
     .readdirSync(seedersPath)
     .filter((file) => file.endsWith('.sql'));
-  console.log('seederFiles', seederFiles);
 
-  for (const file of seederFiles) {
+  const filesToRun = seederArgs.length
+    ? seederArgs.filter((arg) => allSeederFiles.includes(arg))
+    : allSeederFiles;
+
+  if (filesToRun.length === 0) {
+    console.error(
+      seederArgs.length
+        ? 'No matching seeder files found for the provided arguments.'
+        : 'No seeder files found to execute.',
+    );
+    pool.end();
+    return;
+  }
+
+  for (const file of filesToRun) {
     const filePath = path.join(seedersPath, file);
     const sql = fs.readFileSync(filePath, 'utf8');
     try {
