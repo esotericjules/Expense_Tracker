@@ -2,6 +2,6 @@ export const ROUTES = {
   HOME: '/',
   REGISTER: '/register',
   LOGIN: '/login',
-  CREATE_CATEGORY: '/create-category',
-  GET_CATEGORY: '/get-category',
+  CREATE_CATEGORY: '/categories',
+  GET_CATEGORY: '/categories/:id',
 };
