@@ -1,8 +1,17 @@
 export type Category = {
-  id: number;
+  id: string;
   name: string;
   description?: string;
-  userId: string;
+  user_id?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+};
+
+export type CategoryApiResponse = {
+  id: string;
+  name: string;
+  description?: string;
+  user_id: string;
   createdAt: Date;
   updatedAt: Date;
 };
