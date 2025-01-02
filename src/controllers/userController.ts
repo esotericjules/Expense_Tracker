@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { User } from '../types/user';
-import { handleRequestErrorResponse } from '../helpers/index';
+import { handleRequestErrorResponse } from '../helpers/controllerValidations';
 import { findUserByEmail, createUser } from '../models/userModel';
 dotenv.config();
 

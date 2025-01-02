@@ -1,14 +1,36 @@
 import express from 'express';
-import { createCategory } from '../controllers/categoryController';
+import {
+  createCategoryController,
+  getCategoryByIdController,
+  getAllCategoriesController,
+  updateCategoryController,
+  deleteCategoryController,
+} from '../controllers/categoryController';
 import { ROUTES } from '../constants/routes';
 import authMiddleware from '../middlewares/authMiddleware';
 
 const categoryRoutes = express();
 
-categoryRoutes.post(ROUTES.CREATE_CATEGORY, authMiddleware, createCategory);
+categoryRoutes.post(ROUTES.CATEGORY, authMiddleware, createCategoryController);
 
-// categoryRoutes.get(ROUTES.GET_CATEGORY, (req, res) => {
-//   getCategories(req, res);
-// });
+categoryRoutes.get(
+  ROUTES.CATEGORY_BY_ID,
+  authMiddleware,
+  getCategoryByIdController,
+);
+
+categoryRoutes.get(ROUTES.CATEGORY, authMiddleware, getAllCategoriesController);
+
+categoryRoutes.put(
+  ROUTES.CATEGORY_BY_ID,
+  authMiddleware,
+  updateCategoryController,
+);
+
+categoryRoutes.delete(
+  ROUTES.CATEGORY_BY_ID,
+  authMiddleware,
+  deleteCategoryController,
+);
 
 export default categoryRoutes;
