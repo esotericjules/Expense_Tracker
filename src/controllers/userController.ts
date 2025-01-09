@@ -22,6 +22,8 @@ export const registerUser = async (
     );
   }
 
+  // TODO: Add email validation using email-validator package
+
   try {
     // check if user already exists
     const existingUser: User = await findUserByEmail(email);
@@ -84,7 +86,7 @@ export const loginUser = async (
       { userId: user.id, email: user.email },
       secretKey,
       {
-        expiresIn: '1h',
+        expiresIn: '5h',
       },
     );
 
