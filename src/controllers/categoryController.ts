@@ -25,6 +25,7 @@ export const createCategoryController = async (
     return;
   }
 
+  // userId is the same as the user ID in the token
   if (userId !== req.body.user.userId) {
     handleRequestErrorResponse(res, 403, 'Forbidden');
     return;

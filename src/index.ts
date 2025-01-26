@@ -2,7 +2,7 @@ import express, { Express } from 'express';
 import dotenv from 'dotenv';
 import { testDbConnection } from './database/config/db';
 import userRoutes from './routes/userRoutes';
-// import expenseRoutes from '../routes/expenseRoutes';
+import expenseRoutes from './routes/expenseRoutes';
 import categoryRoutes from './routes/categoryRoutes';
 
 dotenv.config();
@@ -16,11 +16,8 @@ const PORT = process.env.PORT || 3000;
 // Middleware to parse JSON request bodies
 app.use(express.json());
 
-const routes = [userRoutes, categoryRoutes];
+const routes = [userRoutes, categoryRoutes, expenseRoutes];
 app.use(routes);
-
-// app.use('/api/expenses', expenseRoutes);
-// app.use('/api/categories', categoryRoutes);
 
 app.get('/', (req, res) => {
   res.send('Hello, world!');

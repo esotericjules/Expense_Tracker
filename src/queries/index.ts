@@ -12,6 +12,13 @@ const QUERIES = {
   UPDATE_CATEGORY:
     'UPDATE category SET name = $1, description = $2 WHERE id = $3 RETURNING *',
   DELETE_CATEGORY: 'DELETE FROM category WHERE id = $1 RETURNING *',
+  CREATE_EXPENSE:
+    'INSERT INTO expense (name, amount, description, category_id, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+  GET_EXPENSE_BY_ID: 'SELECT * FROM expense WHERE id = $1',
+  UPDATE_EXPENSE:
+    'UPDATE expense SET name = $1, amount = $2, description = $3, category_id = $4 WHERE id = $5 RETURNING *',
+  DELETE_EXPENSE: 'DELETE FROM expense WHERE id = $1 RETURNING *',
+  GET_ALL_EXPENSES: 'SELECT * FROM expense',
 };
 
 export default QUERIES;
