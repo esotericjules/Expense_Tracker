@@ -50,7 +50,9 @@ The Personal Expense Tracker consists of a responsive frontend, a RESTful backen
 - Backend: Manages server-side logic, API requests, and database interactions.
 - Database: Stores and retrieves all application data.
 ### 6.2 Component Diagrams
-[﻿Expense tracker component diagram](https://app.eraser.io/workspace/XLfuA5ejgOUvGNvkinpn?elements=_Q0Syxvs-VPF_3gF-9gEew) 
+[﻿Expense tracker component diagra](https://app.eraser.io/workspace/XLfuA5ejgOUvGNvkinpn?elements=_Q0Syxvs-VPF_3gF-9gEew) 
+
+![Expense tracker component diagram](/.eraser/XLfuA5ejgOUvGNvkinpn___J5B1LTY5OmhP3PfPSAonmWRaBMG3___---figure---B5p8qe6ZSPe-Teci1opAj---figure---_Q0Syxvs-VPF_3gF-9gEew.png "Expense tracker component diagram")
 
 ### 6.3 Database Design
 Outline the database design and structure.
