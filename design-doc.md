@@ -118,9 +118,9 @@ Use of a CDN in the future to ensure fast global content delivery.
 
 ### 9.4 Database Deployment
 - Database Service: The PostgreSQL database will be hosted on AWS RDS (Relational Database Service).
-Scaling Strategy:
-- Read Replicas: Read-heavy workloads will be optimized using RDS read replicas.
-- Multi-AZ Deployment: The database will be replicated across multiple availability zones to ensure fault tolerance and high availability.
+- Scaling Strategy:
+  - Read Replicas: Read-heavy workloads will be optimized using RDS read replicas.
+  - Multi-AZ Deployment: The database will be replicated across multiple availability zones to ensure fault tolerance and high availability.
 -Backup & Recovery:
   - Automated daily snapshots will be enabled for disaster recovery.
   - Point-in-time recovery (PITR) will allow restoring the database to any previous state.
