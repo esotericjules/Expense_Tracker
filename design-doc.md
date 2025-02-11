@@ -20,9 +20,11 @@ The Personal Expense Tracker is a web application that allows users to manage an
 ### 1.5 Overview
 This document outlines the system’s architectural representation, stakeholder concerns, system overview, architectural strategies, key decisions, quality attributes, and identified risks.
 
+
 ## 2. Architectural Representation
 ### 2.1 Architectural Style and Rationale
 The system follows a monolithic architecture to centralize application logic and streamline development. All core features (e.g., user management, expense tracking, reporting) are integrated within a single codebase, simplifying deployment and maintenance. The backend is designed as a RESTful API for client-server communication.
+
 
 ## 3. System Stakeholders and Concerns
 ### 3.1 Stakeholders
@@ -36,6 +38,7 @@ The system follows a monolithic architecture to centralize application logic and
 ### 4.1 High-Level Description
 The Personal Expense Tracker consists of a responsive frontend, a RESTful backend, and a PostgreSQL database. Users can log expenses, generate reports, and manage categories. The system ensures data security and supports real-time group collaboration.
 
+
 ## 5. Architectural Strategies
 ### 5.1 Key Strategies
 - Separate Frontend Deployment: Although the frontend is developed and deployed independently, it interacts with the backend through an API Gateway, allowing for modularity and potential future scalability.
@@ -44,6 +47,8 @@ The Personal Expense Tracker consists of a responsive frontend, a RESTful backen
 - Use HTTPS, JWT for authentication, and encryption for sensitive data such as passwords.
 - Implement load balancers, API gateways, and caching mechanisms to support scalability
 - Employ Redis caching, database optimization, and indexing to improve query speed and overall system efficiency. Indexing in the PostgreSQL database ensures faster lookups for frequently queried fields, such as expense categories and user-specific data, thereby reducing latency.
+
+
 ## 6. System Architecture
 ### 6.1 Overview of Layers/Modules
 - Frontend: Handles the user interface and client-side logic.
@@ -57,10 +62,12 @@ The Personal Expense Tracker consists of a responsive frontend, a RESTful backen
 ### 6.3 Database Design 
 [ERD]([﻿dbdiagram.io/d/Personal-expense-tracker-673b135fe9daa85acacfc80c](https://dbdiagram.io/d/Personal-expense-tracker-673b135fe9daa85acacfc80c))
 
+
 ## 7. Key Architectural Decisions
 ### 7.1 Decision Log
 Monolithic Architecture: Chosen for its simplicity and ease of deployment for the MVP.
 Tech Stack Selection: Chosen based on team expertise, project requirements, speed of development, and community support.
+
 
 ## 8. Quality Attributes
 ### 8.1 Performance
@@ -79,6 +86,8 @@ Tech Stack Selection: Chosen based on team expertise, project requirements, spee
 - Data validation
 ### 8.4 Maintainability
 Follow best coding practices and comprehensive documentation for easy maintenance.
+
+
 
 ## 9. Deployment Strategy
 ### 9.1 Deployment Environments
@@ -127,12 +136,14 @@ Use of a CDN in the future to ensure fast global content delivery.
 - Security:
   - IAM roles will manage access control to AWS RDS.
   - Encryption in transit (TLS) and at rest will be enforced.
+
     
 ## 10. Risks and Technical Debt
 ### 10.1 Identified Risks
 - Scaling Costs: Increased cloud resource usage may raise costs.
 ### 10.2 Technical Debt
 Initial technical debt in advanced reporting features, planned for post-MVP phase.
+
 
 ## 11. Appendices
 ### 11.1 Glossary
