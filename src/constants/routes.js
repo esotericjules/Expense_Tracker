@@ -1,5 +1,6 @@
 const BASE_CATEGORY_ROUTE = '/categories';
 const BASE_EXPENSE_ROUTE = '/expenses';
+const BASE_REPORT_ROUTE = '/reports';
 
 export const ROUTES = {
   HOME: '/',

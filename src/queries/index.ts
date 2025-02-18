@@ -12,13 +12,50 @@ const QUERIES = {
   UPDATE_CATEGORY:
     'UPDATE category SET name = $1, description = $2 WHERE id = $3 RETURNING *',
   DELETE_CATEGORY: 'DELETE FROM category WHERE id = $1 RETURNING *',
-  CREATE_EXPENSE:
-    'INSERT INTO expense (name, amount, description, category_id, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+  CREATE_EXPENSE: `INSERT INTO expense (name, amount, description, category_id, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
   GET_EXPENSE_BY_ID: 'SELECT * FROM expense WHERE id = $1',
   UPDATE_EXPENSE:
     'UPDATE expense SET name = $1, amount = $2, description = $3, category_id = $4 WHERE id = $5 RETURNING *',
   DELETE_EXPENSE: 'DELETE FROM expense WHERE id = $1 RETURNING *',
   GET_ALL_EXPENSES: 'SELECT * FROM expense',
+  FETCH_MONTHLY_EXPENSES_REPORT: `
+    SELECT 
+      EXTRACT(MONTH FROM created_at) AS month,
+      SUM(amount) AS total_expenses
+    FROM expense
+    WHERE EXTRACT(YEAR FROM created_at) = $1
+    GROUP BY month
+    ORDER BY month
+  `,
+  FETCH_YEARLY_EXPENSES_REPORT: `
+    SELECT 
+      EXTRACT(YEAR FROM created_at) AS year,
+      SUM(amount) AS total_expenses
+    FROM expense
+    GROUP BY year
+    ORDER BY year DESC
+  `,
+  FETCH_CATEGORY_TOTALS_FOR_MONTH: `
+    SELECT 
+      CASE 
+        WHEN c.name IS NULL THEN 'Uncategorized'
+        ELSE c.name 
+      END AS category_name,
+      EXTRACT(MONTH FROM e.created_at) AS month,
+      SUM(e.amount) AS total_amount
+    FROM expense e
+    LEFT JOIN category c ON e.category_id = c.id
+    WHERE 
+      EXTRACT(YEAR FROM e.created_at) = $1 
+      AND EXTRACT(MONTH FROM e.created_at) = $2
+    GROUP BY 
+      CASE 
+        WHEN c.name IS NULL THEN 'Uncategorized'
+        ELSE c.name 
+      END,
+      EXTRACT(MONTH FROM e.created_at)
+    ORDER BY total_amount DESC
+  `,
 };
 
 export default QUERIES;
