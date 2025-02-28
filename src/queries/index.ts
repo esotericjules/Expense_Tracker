@@ -23,7 +23,9 @@ const QUERIES = {
       EXTRACT(MONTH FROM created_at) AS month,
       SUM(amount) AS total_expenses
     FROM expense
-    WHERE EXTRACT(YEAR FROM created_at) = $1
+    WHERE 
+      EXTRACT(YEAR FROM created_at) = $1
+      AND user_id = $2
     GROUP BY month
     ORDER BY month
   `,
