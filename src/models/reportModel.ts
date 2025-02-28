@@ -1,6 +1,10 @@
 import { pool } from '../database/config/db';
 import QUERIES from '../queries';
-import { MonthlyExpenses } from '../types/report';
+import {
+  MonthlyExpenses,
+  CategoryExpenses,
+  YearlyExpenses,
+} from '../types/report';
 
 export const getTotalMonthlyExpense = async (
   year: number,
@@ -8,6 +12,26 @@ export const getTotalMonthlyExpense = async (
 ): Promise<MonthlyExpenses[]> => {
   const result = await pool.query(QUERIES.FETCH_MONTHLY_EXPENSES_REPORT, [
     year,
+    userId,
+  ]);
+  return result.rows;
+};
+
+export const getCategoryExpensesByMonthYear = async (
+  year: number,
+  month: number,
+): Promise<CategoryExpenses[]> => {
+  const result = await pool.query(QUERIES.FETCH_CATEGORY_TOTALS_FOR_MONTH, [
+    year,
+    month,
+  ]);
+  return result.rows;
+};
+
+export const getYearlyExpenses = async (
+  userId: number,
+): Promise<YearlyExpenses[]> => {
+  const result = await pool.query(QUERIES.FETCH_YEARLY_EXPENSES_REPORT, [
     userId,
   ]);
   return result.rows;

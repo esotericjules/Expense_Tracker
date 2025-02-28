@@ -34,6 +34,7 @@ const QUERIES = {
       EXTRACT(YEAR FROM created_at) AS year,
       SUM(amount) AS total_expenses
     FROM expense
+    WHERE user_id = $1
     GROUP BY year
     ORDER BY year DESC
   `,
