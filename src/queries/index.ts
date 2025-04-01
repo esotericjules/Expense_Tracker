@@ -20,24 +20,23 @@ const QUERIES = {
   GET_ALL_EXPENSES: 'SELECT * FROM expense',
   FETCH_MONTHLY_EXPENSES_REPORT: `
     SELECT 
-      EXTRACT(MONTH FROM created_at) AS month,
+      created_month AS month,
       SUM(amount) AS total_expenses
-    FROM expense
-    WHERE 
-      EXTRACT(YEAR FROM created_at) = $1
-      AND user_id = $2
-    GROUP BY month
-    ORDER BY month
+   FROM expense
+   WHERE 
+    created_year = $1
+    AND user_id = $2
+  GROUP BY created_month
+  ORDER BY created_month;
   `,
+
   FETCH_YEARLY_EXPENSES_REPORT: `
-    SELECT 
-      EXTRACT(YEAR FROM created_at) AS year,
-      SUM(amount) AS total_expenses
-    FROM expense
+    SELECT year, total_expenses
+      FROM expense_yearly_summary
     WHERE user_id = $1
-    GROUP BY year
-    ORDER BY year DESC
+    ORDER BY year DESC;
   `,
+
   FETCH_CATEGORY_TOTALS_FOR_MONTH: `
     SELECT 
       CASE 

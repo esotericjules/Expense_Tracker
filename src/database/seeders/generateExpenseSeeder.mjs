@@ -52,7 +52,7 @@ const saveSeedFile = (sqlContent) => {
   fs.writeFileSync(filePath, sqlContent);
 };
 
-const expenses = await generateExpenseSeeds(4);
+const expenses = await generateExpenseSeeds(500);
 const seedData = `
 INSERT INTO expense (name, description, amount, user_id, category_id) VALUES
 ${expenses};
