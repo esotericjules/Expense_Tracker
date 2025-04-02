@@ -38,25 +38,20 @@ const QUERIES = {
   `,
 
   FETCH_CATEGORY_TOTALS_FOR_MONTH: `
-    SELECT 
-      CASE 
-        WHEN c.name IS NULL THEN 'Uncategorized'
-        ELSE c.name 
-      END AS category_name,
-      EXTRACT(MONTH FROM e.created_at) AS month,
-      SUM(e.amount) AS total_amount
-    FROM expense e
-    LEFT JOIN category c ON e.category_id = c.id
-    WHERE 
-      EXTRACT(YEAR FROM e.created_at) = $1 
-      AND EXTRACT(MONTH FROM e.created_at) = $2
-    GROUP BY 
-      CASE 
-        WHEN c.name IS NULL THEN 'Uncategorized'
-        ELSE c.name 
-      END,
-      EXTRACT(MONTH FROM e.created_at)
-    ORDER BY total_amount DESC
+   SELECT
+  COALESCE(c.name, 'Uncategorized') AS category_name,
+  e.created_month AS month,
+  SUM(e.amount) AS total_amount
+FROM expense e
+LEFT JOIN category c ON e.category_id = c.id
+WHERE
+  e.created_year = $1
+  AND e.created_month = $2
+  AND e.user_id = '1fb4e68a-bfb3-49fa-9bad-22484ddbc147'
+GROUP BY
+  COALESCE(c.name, 'Uncategorized'),
+  e.created_month
+ORDER BY total_amount DESC;
   `,
 };
 
