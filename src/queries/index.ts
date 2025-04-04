@@ -38,20 +38,12 @@ const QUERIES = {
   `,
 
   FETCH_CATEGORY_TOTALS_FOR_MONTH: `
-   SELECT
-  COALESCE(c.name, 'Uncategorized') AS category_name,
-  e.created_month AS month,
-  SUM(e.amount) AS total_amount
-FROM expense e
-LEFT JOIN category c ON e.category_id = c.id
-WHERE
-  e.created_year = $1
-  AND e.created_month = $2
-  AND e.user_id = '1fb4e68a-bfb3-49fa-9bad-22484ddbc147'
-GROUP BY
-  COALESCE(c.name, 'Uncategorized'),
-  e.created_month
-ORDER BY total_amount DESC;
+    SELECT * FROM monthly_category_summary
+    WHERE
+    year = $1
+    AND month = $2
+    AND user_id = $3
+    ORDER BY month DESC;
   `,
 };
 

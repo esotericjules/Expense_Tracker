@@ -82,6 +82,7 @@ export const getMonthlyCategoryExpenseReport = async (
     const expenses: CategoryExpenses[] = await getCategoryExpensesByMonthYear(
       Number(year),
       Number(month),
+      userId,
     );
 
     const formattedCategoryExpenses: FormattedCategoryExpenses[] = expenses.map(

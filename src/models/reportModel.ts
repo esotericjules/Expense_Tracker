@@ -20,10 +20,12 @@ export const getTotalMonthlyExpense = async (
 export const getCategoryExpensesByMonthYear = async (
   year: number,
   month: number,
+  userId: number,
 ): Promise<CategoryExpenses[]> => {
   const result = await pool.query(QUERIES.FETCH_CATEGORY_TOTALS_FOR_MONTH, [
     year,
     month,
+    userId,
   ]);
   return result.rows;
 };
