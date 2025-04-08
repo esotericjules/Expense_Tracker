@@ -1,7 +1,12 @@
 
 INSERT INTO category (name, description, user_id) VALUES
-('Food', 'Our dog-friendly Car ensures sociable comfort for your pets', '0ad49997-c0a8-4d93-bd12-b7c97315ec2d'),
-('Transportation', 'Our salty-inspired Chair brings a taste of luxury to your scary lifestyle', '0ad49997-c0a8-4d93-bd12-b7c97315ec2d'),
-('Entertainment', 'The sleek and trim Table comes with pink LED lighting for smart functionality', '0f2245ab-3f8f-4406-bc80-0c70025197c4'),
-('Health', 'The Managed systemic interface Bacon offers reliable performance and black design', 'bde47fc0-4bd2-4c55-b2e9-180d1ad5e55f'),
-('Education', 'Discover the tiger-like agility of our Computer, perfect for rigid users', '22c39809-9105-4fb8-ab0e-57e3c49fb293');
+('Food', 'New white Table with ergonomic design for sneaky comfort', '4'),
+('Transportation', 'Savor the golden essence in our Shoes, designed for heavenly culinary adventures', '9'),
+('Entertainment', 'Discover the fine new Gloves with an exciting mix of Plastic ingredients', '7'),
+('Health', 'The sleek and spotless Mouse comes with green LED lighting for smart functionality', '9'),
+('Education', 'The Public-key interactive internet solution Pizza offers reliable performance and shimmering design', '5'),
+('Shopping', 'New yellow Hat with ergonomic design for natural comfort', '9'),
+('Bills', 'The Synchronised interactive website Mouse offers reliable performance and fluffy design', '16'),
+('Travel', 'Professional-grade Bike perfect for austere training and recreational use', '8'),
+('Gifts', 'The Bryana Pants is the latest in a series of blind products from Treutel - Schimmel', '9'),
+('Miscellaneous', 'The Programmable zero tolerance workforce Towels offers reliable performance and delirious design', '6');

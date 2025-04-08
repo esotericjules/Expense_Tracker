@@ -60,7 +60,7 @@ const saveSeedFile = (sqlContent) => {
   fs.writeFileSync(filePath, sqlContent);
 };
 
-const categories = await generateCategorySeeds(5);
+const categories = await generateCategorySeeds(10);
 // Generate the SQL
 const seedData = `
 INSERT INTO category (name, description, user_id) VALUES

@@ -5,18 +5,22 @@ import { faker } from '@faker-js/faker';
 import bcrypt from 'bcryptjs';
 
 const generateUserSeeds = async (count) => {
-  const saltRounds = 10;
-  const myPlaintextPassword = 'password';
-  const hashedPassword = await bcrypt.hash(myPlaintextPassword, saltRounds);
-  let seeds = [];
+  try {
+    const saltRounds = 10;
+    const myPlaintextPassword = 'password';
+    const hashedPassword = await bcrypt.hash(myPlaintextPassword, saltRounds);
+    let seeds = [];
 
-  for (let i = 0; i < count; i++) {
-    const username = faker.internet.username();
-    const email = faker.internet.email();
-    const password = hashedPassword;
-    seeds.push(`('${username}', '${email}', '${password}')`);
+    for (let i = 0; i < count; i++) {
+      const username = faker.internet.username();
+      const email = faker.internet.email();
+      const password = hashedPassword;
+      seeds.push(`('${username}', '${email}', '${password}')`);
+    }
+    return seeds.join(',\n');
+  } catch (error) {
+    console.error('error genenerating user seeder', error);
   }
-  return seeds.join(',\n');
 };
 
 const saveSeedFile = (sqlContent) => {
@@ -34,7 +38,7 @@ const saveSeedFile = (sqlContent) => {
   fs.writeFileSync(filePath, sqlContent);
 };
 
-const users = await generateUserSeeds(2);
+const users = await generateUserSeeds(15);
 // Generate the SQL
 const seedData = `
 INSERT INTO "user" (username, email, password) VALUES
