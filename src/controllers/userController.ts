@@ -1,53 +1,39 @@
 import { Request, Response } from 'express';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
-import { User } from '../types/user';
 import { handleRequestErrorResponse } from '../helpers/controllerValidations';
-import { findUserByEmail, createUser } from '../models/userModel';
-dotenv.config();
+import {
+  validateRegistrationData,
+  registerUserService,
+  loginUserService,
+} from '../services/authService';
+import { USER_MESSAGES, ERROR_MESSAGES } from '../constants/messages';
 
-const secretKey = process.env.JWT_SECRET_KEY;
 export const registerUser = async (
   req: Request,
   res: Response,
 ): Promise<Response> => {
   const { username, email, password } = req.body;
 
-  if (!username || !email || !password) {
+  const validation = validateRegistrationData(username, email, password);
+  if (!validation.isValid) {
+    return handleRequestErrorResponse(res, 400, validation.message || '');
+  }
+
+  const result = await registerUserService(username, email, password);
+
+  if (!result.success) {
     return handleRequestErrorResponse(
       res,
-      400,
-      'Username, email, and password are required',
+      result.message === USER_MESSAGES.USER_EXISTS ? 409 : 500,
+      result.message || ERROR_MESSAGES.ERROR_REGISTERING_USER,
     );
   }
 
-  // TODO: Add email validation using email-validator package
-
-  try {
-    // check if user already exists
-    const existingUser: User = await findUserByEmail(email);
-
-    if (existingUser) {
-      return handleRequestErrorResponse(res, 409, 'User already exists');
-    }
-
-    // encrypt password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // save user to database
-    const newUser: User = await createUser(username, email, hashedPassword);
-
-    return res.status(201).json({
-      message: 'User registered successfully',
-      data: {
-        ...newUser,
-      },
-    });
-  } catch (error) {
-    console.error('Error registering user:', error);
-    return handleRequestErrorResponse(res, 500, 'Internal server error');
-  }
+  return res.status(201).json({
+    message: result.message,
+    data: {
+      ...result.user,
+    },
+  });
 };
 
 export const loginUser = async (
@@ -56,50 +42,32 @@ export const loginUser = async (
 ): Promise<Response> => {
   const { email, password } = req.body;
 
-  if (!secretKey) {
-    console.error('JWT secret key is not defined');
-    return res.status(500).json({ message: 'Server error' });
-  }
-
   if (!email || !password) {
     return handleRequestErrorResponse(
       res,
       400,
-      'Email and password are required',
+      USER_MESSAGES.LOGIN_REQUIRED_FIELDS,
     );
   }
 
-  try {
-    const user: User = await findUserByEmail(email);
+  const result = await loginUserService(email, password);
 
-    if (!user) {
-      return handleRequestErrorResponse(res, 404, 'User not found');
-    }
+  if (!result.success) {
+    const statusCode =
+      result.message === USER_MESSAGES.USER_NOT_FOUND
+        ? 404
+        : result.message === USER_MESSAGES.INVALID_PASSWORD
+          ? 401
+          : 500;
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      return handleRequestErrorResponse(res, 401, 'Invalid password');
-    }
-
-    // Generate JWT token
-    const token: string = jwt.sign(
-      { userId: user.id, email: user.email },
-      secretKey,
-      {
-        expiresIn: '5h',
-      },
-    );
-
-    res.status(200).json({
-      message: 'Login successful',
-      token,
-      data: {
-        ...user,
-      },
-    });
-    return res;
-  } catch (error) {
-    console.error('Error logging in:', error);
-    return handleRequestErrorResponse(res, 500, 'Internal server error');
+    return handleRequestErrorResponse(res, statusCode, result.message || '');
   }
+
+  return res.status(200).json({
+    message: USER_MESSAGES.LOGIN_SUCCESS,
+    token: result.token,
+    data: {
+      ...result.user,
+    },
+  });
 };
