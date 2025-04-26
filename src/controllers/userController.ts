@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import { handleRequestErrorResponse } from '../helpers/controllerValidations';
+import { hashPassword } from '../helpers/helpers';
+import { findUserByEmail, createUser } from '../models/userModel';
 import {
   validateRegistrationData,
   registerUserService,
@@ -18,7 +20,11 @@ export const registerUser = async (
     return handleRequestErrorResponse(res, 400, validation.message || '');
   }
 
-  const result = await registerUserService(username, email, password);
+  const result = await registerUserService({
+    hashPassword,
+    findUserByEmail,
+    createUser,
+  })(username, email, password);
 
   if (!result.success) {
     return handleRequestErrorResponse(
